@@ -30,6 +30,7 @@
     }
     .dropdown-menu {
       max-height: 500px;
+      max-width: 300px;
       overflow-y: auto;
     }
   </style>
@@ -40,26 +41,25 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script>new Clipboard('.clipboard');</script>
 
   <div class="container-fluid">
   <section class="banner embed-responsive-item">
     <video class="hidden-sm-down rounded" height="98%" width="98%" autoplay controls>
-      <source src="{{ play }}.m3u8" type="application/x-mpegURL">
+      <source src="{{ play_link }}" type="application/x-mpegURL">
     </video>
     <div class="btn-group dropleft float-right a">
       <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
       <div class="dropdown-menu">
         <h6 class="dropdown-header">Now playing</h6>
-        <span class="dropdown-item-text">{{ play_name }}</span>
+        <span class="dropdown-item-text"><button type="button" class="btn btn-outline-dark btn-sm clipboard" data-clipboard-text="{{ play_link }}">{{ play_name }}</button></span>
         <h6 class="dropdown-header">AceStream ID</h6>
-        <form action="/?=play method="post" class="px-4 py-3">
-          <div class="form-group">
-            <input name="play" type="text" class="form-control">
-          </div>
+        <form action="/?=play method="post">
+          <span class="dropdown-item-text"><input name="play" type="text" class="form-control"></span>
         </form>
         <h6 class="dropdown-header">Available channels</h6>
 {% for channel in channels %}
-        <a class="dropdown-item" href="?play={{ channel.url }}">{{ channel.name }}</a>
+        <a class="dropdown-item{%if play==channel.url %} active{% endif %}" href="?play={{ channel.url }}">{{ channel.name }}</a>
 {% endfor %}
       </div>
     </div>

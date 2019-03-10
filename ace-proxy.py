@@ -41,7 +41,8 @@ def get_index():
   for channel in channels:
     if channel["url"] == play:
       play_name = channel["name"]
-  return(render_template("index.html.j2", play=play, play_name=play_name, channels=channels))
+  play_link = os.path.dirname(request.base_url)+"/"+play+".m3u8"
+  return(render_template("index.html.j2", play=play, play_name=play_name, play_link=play_link, channels=channels))
 
 @app.route("/<stream_id>.m3u8")
 def get_manifest(stream_id):
