@@ -25,12 +25,12 @@
       position: absolute;
     }
     .a {
-      top: 20px;
+      top: 50px;
       right: 20px;
     }
     .dropdown-menu {
-      max-height: 500px;
-      max-width: 300px;
+      max-height: 600px;
+      max-width: 250px;
       overflow-y: auto;
     }
   </style>
@@ -45,17 +45,17 @@
 
   <div class="container-fluid">
   <section class="banner embed-responsive-item">
-    <video class="hidden-sm-down rounded" height="98%" width="98%" autoplay controls>
+    <video class="hidden-sm-down" height="98%" width="98%" autoplay controls>
       <source src="{{ play_link }}" type="application/x-mpegURL">
     </video>
-    <div class="btn-group dropleft float-right a">
+    <div class="btn-group dropdown float-right a">
       <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu dropdown-menu-right">
         <h6 class="dropdown-header">Now playing</h6>
         <span class="dropdown-item-text"><button type="button" class="btn btn-outline-dark btn-sm clipboard" data-clipboard-text="{{ play_link }}">{{ play_name }}</button></span>
         <h6 class="dropdown-header">AceStream ID</h6>
         <form action="/?=play method="post">
-          <span class="dropdown-item-text"><input name="play" type="text" class="form-control"></span>
+          <span class="dropdown-item-text"><input name="play" type="text" class="form-control form-control-sm"></span>
         </form>
         <h6 class="dropdown-header">Available channels</h6>
 {% for channel in channels %}
