@@ -8,6 +8,7 @@ ENV LIVE_MEM_CACHE_SIZE 1000000000000
 
 RUN apt-get update && \
 apt-get install -y curl net-tools libssl1.0.0 libpython2.7 python-setupdocs python-apsw python-libxslt1 python-pip && pip install flask
+RUN mkdir -p /opt/acestream && useradd acestream -d /opt/acestream && chown -R acestream /opt/acestream
 
 USER acestream
 WORKDIR /opt/acestream
