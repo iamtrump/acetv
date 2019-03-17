@@ -17,6 +17,7 @@ download_dir = "/tmp"
 channels_path = download_dir+"/channels.json"
 channels_url = os.environ["PLAYLIST"]
 channels_refresh_interval = os.environ["PLAYLIST_INTERVAL"]
+preferred_lang = os.environ["PREFERRED_LANG"]
 
 def requests_retry_session(retries=5, backoff_factor=0.3, status_forcelist=(500, 502, 504), session=None):
   session = session or requests.Session()
@@ -53,7 +54,7 @@ def read_channels():
   return channels
 
 def get_manifest(ace_id):
-  r = get_piece(engine_url+"/ace/manifest.m3u8?id="+ace_id)
+  r = get_piece(engine_url+"/ace/manifest.m3u8?id="+ace_id+"&preferred_audio_language="+preferred_lang)
   m3u8 = re.findall(r"https?://.*\.m3u8",r.text)
   while len(m3u8) > 0: # playlist in playlist situation
     r = get_piece(m3u8[0])
