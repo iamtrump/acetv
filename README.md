@@ -17,3 +17,11 @@ docker build -t acetv .
 docker run -d -p 80:5000 --name acetv acetv
 ```
 * Open [http://localhost/](http://localhost/).
+
+### AceTV behind nginx reverse proxy
+Example config:
+```
+location /ace/ {
+  proxy_pass http://localhost:80/
+  proxy_set_header ACETV_URL $scheme://$host:$server_port/ace;
+```

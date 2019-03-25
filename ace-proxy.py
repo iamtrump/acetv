@@ -53,6 +53,12 @@ def read_channels():
     channels = json.loads(fd.read())
   return channels
 
+def get_upstream_url(request):
+  upstream_url = request.headers.get("ACETV_URL")
+  if upstream_url == None:
+    upstream_url = os.path.dirname(request.base_url)
+  return upstream_url
+
 def get_manifest(ace_id):
   r = get_piece(engine_url+"/ace/manifest.m3u8?id="+ace_id+"&preferred_audio_language="+preferred_lang)
   m3u8 = re.findall(r"https?://.*\.m3u8",r.text)
@@ -87,7 +93,7 @@ def get_index():
   if play == None:
     play = channels[0]["url"]
   play_name = get_channel_name(play, channels)
-  play_link = os.path.dirname(request.base_url)+"/"+play+".m3u8"
+  play_link = get_upstream_url(request)+"/"+play+".m3u8"
   return(render_template("index.html.j2", play=play, play_name=play_name, play_link=play_link, channels=channels))
 
 @app.route("/<ace_id>.m3u8")
@@ -104,4 +110,4 @@ def get_ts(stream_id, chunk_name):
   return send_from_directory(download_dir+"/"+stream_id+"/", chunk_name+".ts")
 
 if __name__ == "__main__":
-  app.run(host='0.0.0.0')
+  app.run(host='0.0.0.0', port=5000)
