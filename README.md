@@ -24,4 +24,5 @@ Example config:
 location /ace/ {
   proxy_pass http://localhost:80/
   proxy_set_header ACETV_URL $scheme://$host:$server_port/ace;
+}
 ```
