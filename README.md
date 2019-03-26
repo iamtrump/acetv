@@ -22,7 +22,7 @@ docker run -d -p 80:5000 --name acetv acetv
 Example config:
 ```
 location /ace/ {
-  proxy_pass http://localhost:80/
+  proxy_pass http://127.0.0.1:80/;
   proxy_set_header ACETV_URL $scheme://$host:$server_port/ace;
 }
 ```
