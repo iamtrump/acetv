@@ -2,7 +2,6 @@
 
 * This is a docker image building instructions to run AceStreamTV with web-interface. More than 500 channels including HD channels.
 * Ability to run custom acestream ID.
-* Apple HLS only.
 
 ### Quick start ###
 
