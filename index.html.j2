@@ -26,7 +26,7 @@
     }
     .dropdown-menu {
       max-height: 600px;
-      max-width: 250px;
+      width: 250px;
       overflow-y: auto;
     }
   </style>
@@ -35,15 +35,16 @@
 <body>
   <div class="container-fluid">
   <section class="banner embed-responsive-item">
-    <video id="video" class="hidden-sm-down" height="98%" width="98%" autoplay controls></video>
+    <video id="video" class="hidden-sm-down" height="98%" width="98%" autoplay controls playsinline></video>
     <div class="btn-group dropdown float-right a">
-      <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+      <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="channels_menu"></a>
       <div class="dropdown-menu dropdown-menu-right">
         <span class="dropdown-item-text"><button type="button" class="btn btn-outline-dark btn-sm clipboard" data-clipboard-text="{{ play_link }}">{{ play_name }}</button></span>
         <form action="?=play method="post">
           <span class="dropdown-item-text"><input name="play" type="text" class="form-control form-control-sm" placeholder="Acestream ID"></span>
         </form>
         <h6 class="dropdown-header">Available channels</h6>
+        <span class="dropdown-item-text"><input type="text" class="form-control form-control-sm" placeholder="Search" id="channel_search" autoFocus></span>
 {% for channel in channels %}
         <a class="dropdown-item{%if play==channel.url %} active{% endif %}" href="?play={{ channel.url }}">{{ channel.name }}</a>
 {% endfor %}
@@ -57,9 +58,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+  <!-- clibboard -->
   <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v1.6.1/dist/clipboard.min.js"></script>
   <script>new Clipboard('.clipboard');</script>
 
+  <!-- channels search input autoclean -->
+  <script>
+    var channels_menu = document.getElementById("channels_menu");
+    channels_menu.addEventListener('click', function () {
+        $("#channel_search").val("");
+        setTimeout(function(){$("#channel_search").focus();},10);
+    });
+  </script>
+
+  <!-- filtering -->
+  <script>
+    $(document).ready(function(){
+      $("#channel_search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".dropdown-menu a").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+
+  <!-- hls -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
     var video = document.getElementById('video');
