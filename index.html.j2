@@ -29,6 +29,9 @@
       width: 250px;
       overflow-y: auto;
     }
+    .pointer {
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -37,14 +40,14 @@
   <section class="banner embed-responsive-item">
     <video id="video" class="hidden-sm-down" height="98%" width="98%" autoplay controls playsinline></video>
     <div class="btn-group dropdown float-right a">
-      <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="channels_menu"></a>
+      <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
       <div class="dropdown-menu dropdown-menu-right">
-        <span class="dropdown-item-text"><button type="button" class="btn btn-outline-dark btn-sm clipboard" data-clipboard-text="{{ play_link }}">{{ play_name }}</button></span>
+        <span class="dropdown-item-text"><h4 class="pointer clipboard" data-clipboard-text="{{ play_link }}" title="Click to copy manifest URL">{{ play_name }}</h4></span>
         <form action="?=play method="post">
-          <span class="dropdown-item-text"><input name="play" type="text" class="form-control form-control-sm" placeholder="Acestream ID"></span>
+          <span class="dropdown-item-text"><input name="play" type="text" class="form-control form-control-sm" placeholder="Acestream ID" tabindex="2"></span>
         </form>
         <h6 class="dropdown-header">Available channels</h6>
-        <span class="dropdown-item-text"><input type="text" class="form-control form-control-sm" placeholder="Search" id="channel_search" autoFocus></span>
+        <span class="dropdown-item-text"><input type="text" class="form-control form-control-sm" placeholder="Search" id="channel_search" tabindex="1"></span>
 {% for channel in channels %}
         <a class="dropdown-item{%if play==channel.url %} active{% endif %}" href="?play={{ channel.url }}">{{ channel.name }}</a>
 {% endfor %}
@@ -62,18 +65,15 @@
   <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v1.6.1/dist/clipboard.min.js"></script>
   <script>new Clipboard('.clipboard');</script>
 
-  <!-- channels search input autoclean -->
+  <!-- filter channels -->
   <script>
-    var channels_menu = document.getElementById("channels_menu");
-    channels_menu.addEventListener('click', function () {
-        $("#channel_search").val("");
-        setTimeout(function(){$("#channel_search").focus();},10);
-    });
-  </script>
-
-  <!-- filtering -->
-  <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
+      $(".dropdown").on("shown.bs.dropdown", function() {
+        $("#channel_search").focus();
+      });
+      $("#channel_search").focus(function(){
+        $("#channel_search").select();
+      });
       $("#channel_search").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $(".dropdown-menu a").filter(function() {
