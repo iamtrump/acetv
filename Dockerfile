@@ -2,9 +2,10 @@ FROM ubuntu:18.04
 MAINTAINER mikhailmironov@mikhailmironov.ru
 
 ENV PLAYLIST http://91.92.66.82/trash/ttv-list/ace.json
-ENV PLAYLIST_INTERVAL 180
+ENV PLAYLIST_UPDATE_INTERVAL 180
 ENV PREFERRED_LANG rus
 ENV ENGINE_OPTS --live-cache-type memory --live-mem-cache-size 1000000000000 --enable-profiler 1 --client-console --http-port=6878 --log-stdout --log-stdout-level debug
+ENV CACHE_DIR /dev/shm
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
@@ -23,7 +24,7 @@ COPY ace-proxy.py ./
 COPY index.html.j2 ./templates/
 
 
-CMD while :; do find /tmp -type f -name "*.ts" -mmin +5 -delete && sleep 30; done & \
+CMD while :; do find ${CACHE_DIR} -type f -name "*.ts" -mmin +5 -delete && sleep 30; done & \
 python ./ace-proxy.py & \
 ./start-engine ${ENGINE_OPTS}
 

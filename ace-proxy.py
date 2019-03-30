@@ -13,10 +13,10 @@ import os
 import re
 
 engine_url = "http://localhost:6878"
-download_dir = "/tmp"
-channels_path = download_dir+"/channels.json"
+cache_dir = os.environ["CACHE_DIR"]
+channels_path = cache_dir+"/channels.json"
 channels_url = os.environ["PLAYLIST"]
-channels_refresh_interval = os.environ["PLAYLIST_INTERVAL"]
+channels_refresh_interval = os.environ["PLAYLIST_UPDATE_INTERVAL"]
 preferred_lang = os.environ["PREFERRED_LANG"]
 
 def requests_retry_session(retries=5, backoff_factor=0.3, status_forcelist=(500, 502, 504), session=None):
@@ -76,7 +76,7 @@ def get_chunks(ace_id, manifest):
   chunks = re.findall(r"https?://.*\.ts", manifest) 
   for chunk in chunks:
     chunk_name = chunk.split("/")[-1]
-    chunk_path = download_dir+"/"+ace_id+"/"+chunk_name
+    chunk_path = cache_dir+"/"+ace_id+"/"+chunk_name
     if not os.path.exists(os.path.dirname(chunk_path)):
       os.makedirs(os.path.dirname(chunk_path))
     if not os.path.isfile(chunk_path):
@@ -107,7 +107,7 @@ def get_m3u8(ace_id):
 
 @app.route("/<stream_id>/<chunk_name>.ts")
 def get_ts(stream_id, chunk_name):
-  return send_from_directory(download_dir+"/"+stream_id+"/", chunk_name+".ts")
+  return send_from_directory(cache_dir+"/"+stream_id+"/", chunk_name+".ts")
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=5000)
