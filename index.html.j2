@@ -1,105 +1,39 @@
 <head>
-  <title>{{ play_name }} — TDZ&trade; AceTV</title>
-
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-  <style>
-    body {
-      background-color: black;
-    }
-    video {
-      position: relative;
-      display: block;
-      width: 100%;
-    }
-    .float-right {
-      position: absolute;
-    }
-    .a {
-      top: 50px;
-      right: 20px;
-    }
-    .dropdown-menu {
-      max-height: 600px;
-      width: 250px;
-      overflow-y: auto;
-    }
-    .pointer {
-      cursor: pointer;
-    }
-  </style>
+    <title>{{ play_name }} — TDZ&trade; AceTV</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="src/css/style.css"/>
 </head>
 
 <body>
-  <div class="container-fluid">
-  <section class="banner embed-responsive-item">
-    <video id="video" class="hidden-sm-down" height="98%" width="98%" autoplay controls playsinline></video>
-    <div class="btn-group dropdown float-right a">
-      <a class="btn btn-outline-dark btn-lg dropdown-toggle float-right" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-      <div class="dropdown-menu dropdown-menu-right">
-        <span class="dropdown-item-text"><h4 class="pointer clipboard" data-clipboard-text="{{ play_link }}" title="Click to copy manifest URL">{{ play_name }}</h4></span>
-        <form action="?=play method="post">
-          <span class="dropdown-item-text"><input name="play" type="text" class="form-control form-control-sm" placeholder="Acestream ID" tabindex="2"></span>
-        </form>
-        <h6 class="dropdown-header">Available channels</h6>
-        <span class="dropdown-item-text"><input type="text" class="form-control form-control-sm" placeholder="Search" id="channel_search" tabindex="1"></span>
-{% for channel in channels %}
-        <a class="dropdown-item{%if play==channel.url %} active{% endif %}" href="?play={{ channel.url }}">{{ channel.name }}</a>
-{% endfor %}
-      </div>
+    <div class="container-fluid">
+        <section class="banner embed-responsive-item">
+            <video id="video" class="hidden-sm-down" height="98%" width="98%" autoplay controls playsinline></video>
+            <div class="sidebar">
+              <div class="header">
+                <h4 class="manifest" data-clipboard-text="{{ play_link }}" title="Click to copy manifest URL">{{ play_name }}</h4>
+                <form action="?=play method=" post">
+                    <input id="aceId" name="play" type="text" placeholder="Acestream ID" tabindex="2">
+                </form>
+                <h6 class="search-title">Available channels</h6>
+                <input id="search" type="text" placeholder="Search" tabindex="1"/>
+              </div>
+              <ul id="channelContainer">
+                {% for channel in channels %}
+                <li  class="{%if play==channel.url %}active{% endif %}">
+                    <div class="channelRow">
+                        <a class="channelLink" href="?play={{ channel.url }}" tabindex={{loop.index + 2}}>{{ channel.name }}</a>
+                    </label>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+        </section>
     </div>
-  </section>
-  </div>
-
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-  <!-- clibboard -->
-  <script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v1.6.1/dist/clipboard.min.js"></script>
-  <script>new Clipboard('.clipboard');</script>
-
-  <!-- filter channels -->
-  <script>
-    $(document).ready(function() {
-      $(".dropdown").on("shown.bs.dropdown", function() {
-        $("#channel_search").focus();
-      });
-      $("#channel_search").focus(function(){
-        $("#channel_search").select();
-      });
-      $("#channel_search").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $(".dropdown-menu a").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
-    });
-  </script>
-
-  <!-- hls -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    var video = document.getElementById('video');
-    if (Hls.isSupported()) {
-      var hls = new Hls();
-      hls.loadSource('{{ play_link }}');
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED,function() {
-        video.play();
-      });
-    }
-    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = '{{ play_link }}';
-      video.addEventListener('loadedmetadata',function() {
-        video.play();
-      });
-    }
-  </script>
+    <!-- hls, script.js-->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="src/js/script.js"></script>
 </body>

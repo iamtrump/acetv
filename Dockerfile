@@ -22,6 +22,8 @@ rm acestream_3.1.35_ubuntu_18.04_x86_64.tar.gz
 
 COPY ace-proxy.py ./
 COPY index.html.j2 ./templates/
+COPY script.js ./src/js/
+COPY style.css ./src/css/
 
 
 CMD while :; do find ${CACHE_DIR} -type f -name "*.ts" -mmin +5 -delete && sleep 30; done & \

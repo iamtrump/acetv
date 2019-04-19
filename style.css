@@ -1,0 +1,88 @@
+body {
+    background-color: black;
+}
+
+video {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    background: white;
+    border: 1px solid black;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    right: -250px;
+    top: 0px;
+    transition: right 0.3s ease-out 0.2s;
+    font-size: 1rem;
+    color: #212529;
+    overflow-y: auto;
+}
+
+.sidebar .header {
+    padding-left: 10px
+}
+
+.sidebar .manifest {
+    margin: 5px 0px 5px 0px;
+    cursor: pointer;
+}
+
+.sidebar .search-title {
+    font-size: .875rem;
+    color: #6c757d;
+    margin: 5px 0px 5px 0px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    cursor: pointer;
+}
+
+.sidebar ul li:hover {
+    background: grey;
+}
+
+.sidebar ul .active {
+    background: #007bff;
+}
+
+.sidebar .channelRow {
+    margin-left: 10px
+}
+
+.sidebar .channelLink {
+    text-decoration: none;
+    color: #212529;
+    display: inherit;
+    width: 100%;
+}
+
+.sidebar input[type=text] {
+    transition: all 0.30s ease-in-out;
+    outline: none;
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid #DDDDDD;
+}
+
+.sidebar input[type=text]:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid rgba(81, 203, 238, 1);
+}
+
+#channelContainer {
+    overflow-y: auto;
+    height: 100%;
+}
