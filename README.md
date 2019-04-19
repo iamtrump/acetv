@@ -25,6 +25,6 @@ location /ace/ {
   proxy_set_header ACETV_URL $scheme://$host:$server_port/ace;
 }
 ```
-UI/UX:
+###UI/UX:
 
 To show the menu place cursor to the right screen border or use shortcut - Alt + left-arrow and Alt + right-arrow for close it up.
