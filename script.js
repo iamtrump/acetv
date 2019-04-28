@@ -7,6 +7,7 @@
     const aceId = document.getElementById('aceId');
     const channelContainer = document.getElementById('channelContainer');
     const bodyCoords = body.getBoundingClientRect();
+    const playLink = document.getElementsByClassName('playLink')[0].innerText;
     const ch = Array.prototype.slice.call(document.querySelectorAll('.sidebar .channellink')).map((o) => ({
         name: o.innerText,
         url: o.href
@@ -66,6 +67,7 @@
     sidebar.addEventListener("mouseleave", function () {
         hideSideBar();
     });
+    sidebar.addEventListener('scroll', (e) => e.stopPropagation());
     aceId.addEventListener("keyup", function (e) {
         if (e.key === 'Enter') {
             hideSideBar();
@@ -86,17 +88,36 @@
             showSidebar();
         }
     });
+    let timer;
+    const handleTouchStart = (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const tapX = touchEndX / window.innerWidth;
+        const tapY = touchEndY / window.innerHeight;
+        if (tapX > 0.9 && tapY > 0.3 && tapY < 0.7) {
+            timer = setTimeout(() => showSidebar(), 1000);
+        } else if (tapX < 0.1 && tapY > 0.3 && tapY < 0.7) {
+            hideSideBar();
+        }
+    };
+
+    const handleTouchEnd = (e) => {
+        clearTimeout(timer)
+    };
+
+    body.addEventListener("touchstart", handleTouchStart, false);
+    body.addEventListener("touchend", handleTouchEnd, false);
 
     const video = document.getElementById('video');
     if (Hls.isSupported()) {
         const hls = new Hls();
-        hls.loadSource('{{ play_link }}');
+        hls.loadSource(playLink);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
             video.play();
         });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = '{{ play_link }}';
+        video.src = playLink;
         video.addEventListener('loadedmetadata', function () {
             video.play();
         });

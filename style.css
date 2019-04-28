@@ -86,3 +86,8 @@ video {
     overflow-y: auto;
     height: 100%;
 }
+
+.playLink {
+    width: 0;
+    height: 0;
+}
