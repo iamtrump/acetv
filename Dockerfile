@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 MAINTAINER mikhailmironov@mikhailmironov.ru
 
 ENV PLAYLIST http://91.92.66.82/trash/ttv-list/ace.json
+ENV PLAYLIST_FULL http://91.92.66.82/trash/ttv-lis111t/as.json
 ENV PLAYLIST_UPDATE_INTERVAL 180
 ENV PREFERRED_LANG rus
 ENV ENGINE_OPTS --live-cache-type memory --live-mem-cache-size 1000000000000 --enable-profiler 1 --client-console --http-port=6878 --log-stdout --log-stdout-level debug

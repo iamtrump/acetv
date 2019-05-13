@@ -3,15 +3,18 @@
     const sidebar = document.getElementsByClassName('sidebar')[0];
     const body = document.getElementsByTagName('body')[0];
     const search = document.getElementById('search');
+    const fullSearchChbx = document.getElementById('fullSearch');
+    let fullSearch = fullSearchChbx.checked;
     const manifest = document.getElementsByClassName('manifest')[0];
-    const aceId = document.getElementById('aceId');
     const channelContainer = document.getElementById('channelContainer');
     const bodyCoords = body.getBoundingClientRect();
-    const playLink = document.getElementsByClassName('playLink')[0].innerText;
-    const ch = Array.prototype.slice.call(document.querySelectorAll('.sidebar .channellink')).map((o) => ({
+    const playLink = document.getElementById('playLink').innerText;
+    const channelsUrl = document.getElementById('channelsUrl').innerText;
+    const ch = Array.prototype.slice.call(document.querySelectorAll('.sidebar .channelLink')).map((o) => ({
         name: o.innerText,
         url: o.href
     }));
+    let fullChannelList;
 
     function filterChannelList(list) {
         channelContainer.innerHTML = "";
@@ -31,11 +34,12 @@
     }
 
     function findChannel(val) {
+        const full = fullSearch ? fullChannelList : ch;
         if (val.length < 3) {
             filterChannelList(ch);
         } else {
             let list = [];
-            ch.forEach((c) => {
+            full.forEach((c) => {
                 if (c.name.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
                     list.push(c);
                 }
@@ -54,8 +58,6 @@
         sidebar.style.right = '-250px';
         search.blur();
         search.value = '';
-        aceId.blur();
-        aceId.value = '';
     }
 
     body.addEventListener("mousemove", function (e) {
@@ -68,11 +70,6 @@
         hideSideBar();
     });
     sidebar.addEventListener('scroll', (e) => e.stopPropagation());
-    aceId.addEventListener("keyup", function (e) {
-        if (e.key === 'Enter') {
-            hideSideBar();
-        }
-    });
 
     search.addEventListener("keyup", function (e) {
         if (e.key === 'Enter') {
@@ -87,6 +84,10 @@
         } else if (e.altKey && e.key === 'ArrowLeft') {
             showSidebar();
         }
+    });
+    fullSearchChbx.addEventListener('change', (e) => {
+        fullSearch = e.target.checked;
+        findChannel(search.value);
     });
     let timer;
     const handleTouchStart = (e) => {
@@ -135,4 +136,23 @@
     manifest.addEventListener('click', e => {
         copy(e);
     });
+
+    // Full channel list request
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', channelsUrl, false);
+        xhr.send();
+        if (xhr.status != 200) {
+            console.log('Loading full channel list failed');
+        } else {
+            fullChannelList = JSON.parse(xhr.responseText).channels.map((o) => {
+                o.url = `${window.location.origin}?play=${o.url}`;
+                return o;
+            });
+            console.log(fullChannelList);
+        }
+    } catch (e) {
+        console.log(e);
+        document.getElementById('fullSearchLabel').style.display = 'none';
+    }
 })();

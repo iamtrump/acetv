@@ -16,6 +16,7 @@ engine_url = "http://localhost:6878"
 cache_dir = os.environ["CACHE_DIR"]
 channels_path = cache_dir + "/channels.json"
 channels_url = os.environ["PLAYLIST"]
+channels_full_url = os.environ["PLAYLIST_FULL"]
 channels_refresh_interval = os.environ["PLAYLIST_UPDATE_INTERVAL"]
 preferred_lang = os.environ["PREFERRED_LANG"]
 
@@ -108,7 +109,14 @@ def get_index():
         play = channels[0]["url"]
     play_name = get_channel_name(play, channels)
     play_link = get_upstream_url(request) + "/" + play + ".m3u8"
-    return render_template("./index.html.j2", play=play, play_name=play_name, play_link=play_link, channels=channels)
+    return render_template(
+        "./index.html.j2",
+        play=play,
+        play_name=play_name,
+        play_link=play_link,
+        channels=channels,
+        channels_full_url=channels_full_url
+    )
 
 
 @app.route("/src/css/style.css")

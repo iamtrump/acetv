@@ -100,7 +100,18 @@ video {
     margin-top: 10px;
 }
 
-.playLink {
+.hidden {
     width: 0;
     height: 0;
+}
+
+#fullSearchLabel {
+    display: block;
+    margin-top: 10px;
+    font-size: .875rem;
+    color: #6c757d;
+}
+
+#fullSearchLabel input {
+    margin-left: 0;
 }
