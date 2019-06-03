@@ -1,0 +1,117 @@
+body {
+    background-color: black;
+}
+
+video {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.sidebar {
+    height: 100%;
+    width: 249px;
+    position: fixed;
+    background: white;
+    border: 1px solid black;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    right: -250px;
+    top: 0px;
+    transition: right 0.3s ease-out 0.2s;
+    font-size: 1.5rem;
+    color: #212529;
+    overflow-y: auto;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.sidebar .header {
+    padding-left: 10px
+}
+
+.sidebar .manifest {
+    margin: 10px 0px 10px 0px;
+    cursor: pointer;
+}
+
+.sidebar .search-title {
+    font-size: .875rem;
+    color: #6c757d;
+    margin: 0px 0px 8px 0px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    cursor: pointer;
+    line-height: 1.8rem;
+    font-size: 1.1rem;
+}
+
+.sidebar ul li:hover {
+    background-color: #f8f9fa;
+}
+
+.sidebar ul .active:hover {
+    background-color: #007bff;
+}
+
+.sidebar ul .active {
+    background: #007bff;
+}
+
+.sidebar .channelRow {
+    margin-left: 10px
+}
+
+.sidebar .channelLink {
+    text-decoration: none;
+    color: #212529;
+    display: inherit;
+    width: 100%;
+}
+
+.sidebar input[type=text] {
+  display: block;
+  width: 80%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.sidebar input[type=text]:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+#channelContainer {
+    overflow-y: auto;
+    height: 100%;
+    margin-top: 10px;
+}
+
+.hidden {
+    width: 0;
+    height: 0;
+}
+
+#fullSearchLabel {
+    display: block;
+    margin-top: 10px;
+    font-size: .875rem;
+    color: #6c757d;
+}
+
+#fullSearchLabel input {
+    margin-left: 0;
+}
