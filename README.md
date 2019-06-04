@@ -18,6 +18,7 @@ docker run -d -p 80:5000 --name acetv acetv
 * Open [http://localhost/](http://localhost/).
 
 ### AceTV behind nginx reverse proxy
+
 Example config:
 ```
 location /ace/ {
@@ -25,6 +26,6 @@ location /ace/ {
   proxy_set_header ACETV_URL $scheme://$host:$server_port/ace;
 }
 ```
-### UI/UX:
+### UI/UX
 
-To show the menu place cursor to the right screen border or use shortcut - Alt + left-arrow and Alt + right-arrow for close it up.
+To make the menu appear move cursor to the right edge of the screen or use shortcut `Alt` + `←`. Use `Alt` + `→` shortcut or move cursor away from the menu to make it disappear.
