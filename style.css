@@ -27,7 +27,8 @@ video {
 }
 
 .sidebar .header {
-    padding-left: 10px
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .sidebar .manifest {
@@ -79,7 +80,7 @@ video {
 
 .sidebar input[type=text] {
   display: block;
-  width: 80%;
+  width: 100%;
   padding: .375rem .75rem;
   font-size: 1rem;
   color: #495057;
@@ -106,15 +107,4 @@ video {
 .hidden {
     width: 0;
     height: 0;
-}
-
-#fullSearchLabel {
-    display: block;
-    margin-top: 10px;
-    font-size: .875rem;
-    color: #6c757d;
-}
-
-#fullSearchLabel input {
-    margin-left: 0;
 }

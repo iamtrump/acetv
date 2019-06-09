@@ -3,23 +3,22 @@
     const sidebar = document.getElementsByClassName('sidebar')[0];
     const body = document.getElementsByTagName('body')[0];
     const search = document.getElementById('search');
-    const fullSearchChbx = document.getElementById('fullSearch');
-    let fullSearch = fullSearchChbx.checked;
     const manifest = document.getElementsByClassName('manifest')[0];
     const channelContainer = document.getElementById('channelContainer');
     const bodyCoords = body.getBoundingClientRect();
     const playLink = document.getElementById('playLink').innerText;
-    const channelsUrl = document.getElementById('channelsUrl').innerText;
     const ch = Array.prototype.slice.call(document.querySelectorAll('.sidebar .channelLink')).map((o) => ({
         name: o.innerText,
         url: o.href
     }));
-    let fullChannelList;
 
     function filterChannelList(list) {
         channelContainer.innerHTML = "";
         list.forEach((c, i) => {
             let li = document.createElement('li');
+            if (manifest.innerText == c.name) {
+                li.className = 'active';
+            }
             let div = document.createElement('div');
             let a = document.createElement('a');
             div.className = 'channelRow';
@@ -34,18 +33,13 @@
     }
 
     function findChannel(val) {
-        const full = fullSearch ? fullChannelList : ch;
-        if (val.length < 3) {
-            filterChannelList(ch);
-        } else {
-            let list = [];
-            full.forEach((c) => {
-                if (c.name.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
-                    list.push(c);
-                }
-            });
-            filterChannelList(list);
-        }
+        let list = [];
+        ch.forEach((c) => {
+            if (c.name.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
+                list.push(c);
+            }
+        });
+        filterChannelList(list);
     }
 
     function showSidebar() {
@@ -84,10 +78,6 @@
         } else if (e.altKey && e.key === 'ArrowLeft') {
             showSidebar();
         }
-    });
-    fullSearchChbx.addEventListener('change', (e) => {
-        fullSearch = e.target.checked;
-        findChannel(search.value);
     });
     let timer;
     const handleTouchStart = (e) => {
@@ -137,22 +127,4 @@
         copy(e);
     });
 
-    // Full channel list request
-    try {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', channelsUrl, false);
-        xhr.send();
-        if (xhr.status != 200) {
-            console.log('Loading full channel list failed');
-        } else {
-            fullChannelList = JSON.parse(xhr.responseText).channels.map((o) => {
-                o.url = `${window.location.origin}?play=${o.url}`;
-                return o;
-            });
-            console.log(fullChannelList);
-        }
-    } catch (e) {
-        console.log(e);
-        document.getElementById('fullSearchLabel').style.display = 'none';
-    }
 })();
