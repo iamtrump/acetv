@@ -13,7 +13,7 @@
     }));
 
     function filterChannelList(list) {
-        channelContainer.innerHTML = "";
+        channelContainer.innerHTML = '';
         list.forEach((c, i) => {
             let li = document.createElement('li');
             if (manifest.innerText == c.name) {
@@ -43,15 +43,17 @@
     }
 
     function showSidebar() {
-        sidebar.style.right = '0px';
-        search.focus();
-        search.value = '';
+        if (sidebar.style.right != '0px') {
+            sidebar.style.right = '0px';
+            filterChannelList(ch);
+            search.value = '';
+            search.focus();
+        }
     }
 
     function hideSideBar() {
         sidebar.style.right = '-250px';
         search.blur();
-        search.value = '';
     }
 
     body.addEventListener("mousemove", function (e) {
@@ -65,10 +67,7 @@
     });
     sidebar.addEventListener('scroll', (e) => e.stopPropagation());
 
-    search.addEventListener("keyup", function (e) {
-        if (e.key === 'Enter') {
-            hideSideBar();
-        }
+    search.addEventListener("input", function (e) {
         findChannel(e.target.value);
     });
 

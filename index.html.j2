@@ -21,7 +21,7 @@
               </div>
               <ul id="channelContainer">
                 {% for channel in channels %}
-                <li  class="{%if play==channel.url %}active{% endif %}">
+                <li class="{%if play==channel.url %}active{% endif %}">
                     <div class="channelRow">
                         <a class="channelLink" href="?play={{ channel.url }}" tabindex={{ loop.index + 2 }}>{{ channel.name }}</a>
                     </label>
