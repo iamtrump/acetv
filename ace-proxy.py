@@ -103,8 +103,9 @@ app = Flask(__name__)
 def get_index():
     get_channels()
     channels = read_channels()
-    play = request.args.get("play")
-    if play is None:
+    try:
+        play = re.search('([0-9a-f]{40})', str(request.args.get("play"))).group(1)
+    except AttributeError:
         play = channels[0]["url"]
     play_name = get_channel_name(play, channels)
     play_link = get_upstream_url(request) + "/" + play + ".m3u8"
