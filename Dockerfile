@@ -16,9 +16,9 @@ USER acestream
 WORKDIR /opt/acestream
 
 # http://wiki.acestream.org/wiki/index.php/Download
-RUN curl -O http://acestream.org/downloads/linux-beta/acestream_3.1.35_ubuntu_18.04_x86_64.tar.gz && \
-tar -xf acestream_3.1.35_ubuntu_18.04_x86_64.tar.gz && \
-rm acestream_3.1.35_ubuntu_18.04_x86_64.tar.gz
+RUN curl -O http://acestream.org/downloads/linux/acestream_3.1.49_ubuntu_18.04_x86_64.tar.gz && \
+tar -xf acestream_3.1.49_ubuntu_18.04_x86_64.tar.gz && \
+rm acestream_3.1.49_ubuntu_18.04_x86_64.tar.gz
 
 COPY ace-proxy.py ./
 COPY index.html.j2 ./templates/
